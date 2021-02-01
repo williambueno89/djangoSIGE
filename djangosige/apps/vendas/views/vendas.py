@@ -8,7 +8,7 @@ from djangosige.apps.base.custom_views import CustomView, CustomCreateView, Cust
 
 from djangosige.apps.vendas.forms import OrcamentoVendaForm, PedidoVendaForm, ItensVendaFormSet, PagamentoFormSet
 from djangosige.apps.vendas.models import OrcamentoVenda, PedidoVenda, ItensVenda, Pagamento
-from djangosige.apps.cadastro.models import MinhaEmpresa
+from djangosige.apps.cadastro.models import MinhaEmpresa, Cliente
 from djangosige.apps.login.models import Usuario
 from djangosige.configs.settings import MEDIA_ROOT
 
@@ -17,9 +17,18 @@ from datetime import datetime
 import io
 
 from .report_vendas import VendaReport
+from django.http.response import JsonResponse
+
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 
 
 class AdicionarVendaView(CustomCreateView):
+
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
     def get_success_message(self, cleaned_data):
         return self.success_message % dict(cleaned_data, id=self.object.pk)
@@ -45,6 +54,24 @@ class AdicionarVendaView(CustomCreateView):
     def post(self, request, form_class, *args, **kwargs):
         self.object = None
         # Tirar . dos campos decimais
+        
+
+        try:
+            action = request.POST['action']            
+            if action == 'search_clientes':
+                data = []
+                prods = Cliente.objects.filter(nome_razao_social__icontains=request.POST['term'])[0:10]
+                for i in prods:
+                    item = i.toJSON()
+                    #item['value'] = i.name
+                    item['text'] = i.nome_razao_social                    
+                    item['id'] = str(i.id)
+                    data.append(item)    
+                return JsonResponse(data, safe=False)
+        except:
+            ''  
+        #breakpoint()
+
         req_post = request.POST.copy()
 
         for key in req_post:

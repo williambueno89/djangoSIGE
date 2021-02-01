@@ -25,7 +25,7 @@ class AdicionarClienteView(AdicionarPessoaView):
         form = ClienteForm(prefix='cliente_form')
         return super(AdicionarClienteView, self).get(request, form, *args, **kwargs)
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):        
         req_post = request.POST.copy()
         req_post['cliente_form-limite_de_credito'] = req_post['cliente_form-limite_de_credito'].replace(
             '.', '')

@@ -15,4 +15,54 @@
     req_urls.info_produto_url = "{% url 'cadastro:infoproduto' %}"
     req_urls.info_pagamento_url = "{% url 'vendas:infocondpagamento' %}"
     $.Admin.vendaForm.init(req_urls);
+
+    function formatRepo(repo) {
+        if (repo.loading) {
+            return repo.text;
+        }
+
+        var option = $(
+            '<div class="wrapper container">'+
+            '<div class="row">' +            
+            '<div class="col-lg-11 text-left shadow-sm">' +            
+            '<p style="margin-bottom: 0;">' +
+            '<b>Nome:</b> ' + repo.nome_razao_social + '<br>' +                      
+            '</p>' +
+            '</div>' +
+            '</div>' +
+            '</div>');
+
+        return option;
+    }
+    
+    $('select[name="cliente"]').select2({
+        theme: "bootstrap4",
+        language: 'pt',
+        allowClear: true,
+        ajax: {
+            delay: 250,
+            type: 'POST',
+            url: window.location.pathname,
+            data: function (params) {
+                var queryParameters = {
+                    term: params.term,
+                    action: 'search_clientes'
+                }
+                return queryParameters;
+            },
+            processResults: function (data) { 
+                
+                console.log(data)
+                return {
+                    results: data
+                };
+            },
+        },
+        placeholder: 'Digita um cliente?',
+        minimumInputLength: 3,  
+        //templateResult: formatRepo,      
+    });    
   </script>
+
+
+

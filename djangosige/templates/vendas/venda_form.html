@@ -1,5 +1,8 @@
 <!-- Body-->
 <div class="body">
+  {% if object.status == '0' or not object%}
+    <button class="btn btn-success" type="submit"><i class="material-icons">&#xE148;</i><span> SALVAR</span></button>
+  {% endif %}
   <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
     
     <ul class="nav nav-tabs" role="tablist">
@@ -143,7 +146,7 @@
             <div class="input-group" style="margin-bottom: 0px;">
               <div class="form-line">
                 {{form.cliente}}
-              </div>
+              </div>              
               <a class="input-group-addon newwindow" style="color: green;" title="Adicionar cliente" href="{% url 'cadastro:addclienteview' %}"><i class="material-icons add-new-icon" title="Adicionar cliente">&#xE147;</i></a>
             </div>
           </div>
@@ -456,9 +459,6 @@
       
     </div>
       
-  </div>
-  {% if object.status == '0' or not object%}
-  <button class="btn btn-success foot-btn" type="submit"><i class="material-icons">&#xE148;</i><span> SALVAR</span></button>
-  {% endif %}
+  </div>  
 </div>
 <!--#Body-->

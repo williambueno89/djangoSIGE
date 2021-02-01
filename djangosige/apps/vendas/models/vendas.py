@@ -7,7 +7,7 @@ from django.urls import reverse_lazy
 
 from decimal import Decimal
 
-from djangosige.apps.fiscal.models import PIS, COFINS
+from djangosige.apps.fiscal.models import COFINS
 from djangosige.apps.estoque.models import DEFAULT_LOCAL_ID
 
 import locale

@@ -5,6 +5,7 @@ from django.db import models
 from decimal import Decimal
 
 from .base import Pessoa
+from django.forms.models import model_to_dict
 
 INDICADOR_IE_DEST = [
     ('1', 'Contribuinte ICMS'),
@@ -22,3 +23,11 @@ class Cliente(Pessoa):
 
     class Meta:
         verbose_name = "Cliente"
+
+
+    def toJSON(self):
+        item = {}        
+        item['nome_razao_social'] = self.nome_razao_social or ''        
+        return item
+
+    
